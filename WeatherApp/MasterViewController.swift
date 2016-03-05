@@ -6,13 +6,14 @@
 //  Copyright © 2016 Arijan Ljoki. All rights reserved.
 //
 
+// API-key 546be23921ef651bb1c511c2e6477f79
+
 import UIKit
 
 class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
-    var objects = [AnyObject]()
-
+    var citiesArray = [AnyObject]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,9 +39,20 @@ class MasterViewController: UITableViewController {
     }
 
     func selectNewCity(sender: AnyObject) {
-        objects.insert(NSDate(), atIndex: 0)
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let selectCityVC = storyboard.instantiateViewControllerWithIdentifier("SelectCityIdentifier") as! SelectCityViewController
+
+        selectCityVC.onCitySelected = { [weak self] (city) in
+            self?.citiesArray.insert(city, atIndex: 0)
+            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+            self?.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+        navigationController?.pushViewController(selectCityVC, animated: true)
+        
+//        
+//        objects.insert(NSDate(), atIndex: 0)
+//        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+//        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
 
     // MARK: - Segues
@@ -48,7 +60,7 @@ class MasterViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
+                let object = citiesArray[indexPath.row]
                 let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
                 controller.detailItem = object
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
@@ -64,13 +76,13 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return objects.count
+        return citiesArray.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
-        let object = objects[indexPath.row] as! NSDate
+        let object = citiesArray[indexPath.row]
         cell.textLabel!.text = object.description
         return cell
     }
@@ -82,7 +94,7 @@ class MasterViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            objects.removeAtIndex(indexPath.row)
+            citiesArray.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.

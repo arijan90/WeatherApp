@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Master-->
@@ -128,6 +129,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SLD-UC-DBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-45" y="129"/>
+        </scene>
+        <!--Select City View Controller-->
+        <scene sceneID="TZn-Ys-33B">
+            <objects>
+                <viewController storyboardIdentifier="SelectCityIdentifier" id="RPb-e0-rHk" customClass="SelectCityViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LVH-kL-pvy"/>
+                        <viewControllerLayoutGuide type="bottom" id="4jT-GO-OdP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5QK-DZ-5iY">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select city" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2iS-FY-QIZ">
+                                <rect key="frame" x="20" y="30" width="80.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type city name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SMr-G2-29g">
+                                <rect key="frame" x="20" y="60.5" width="550" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KUa-cj-8LY">
+                                <rect key="frame" x="20" y="100.5" width="550" height="499.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="KUa-cj-8LY" firstAttribute="leading" secondItem="SMr-G2-29g" secondAttribute="leading" id="11W-TR-3vP"/>
+                            <constraint firstItem="4jT-GO-OdP" firstAttribute="top" secondItem="KUa-cj-8LY" secondAttribute="bottom" id="2E8-d6-5aA"/>
+                            <constraint firstItem="2iS-FY-QIZ" firstAttribute="top" secondItem="LVH-kL-pvy" secondAttribute="bottom" constant="10" id="3g5-B5-gxj"/>
+                            <constraint firstItem="KUa-cj-8LY" firstAttribute="trailing" secondItem="SMr-G2-29g" secondAttribute="trailing" id="4Di-sz-vTg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="SMr-G2-29g" secondAttribute="trailing" constant="10" id="7gS-Mu-iDV"/>
+                            <constraint firstItem="KUa-cj-8LY" firstAttribute="top" secondItem="SMr-G2-29g" secondAttribute="bottom" constant="10" id="ZdN-4q-Xns"/>
+                            <constraint firstItem="SMr-G2-29g" firstAttribute="leading" secondItem="2iS-FY-QIZ" secondAttribute="leading" id="ivc-Zo-bPK"/>
+                            <constraint firstItem="SMr-G2-29g" firstAttribute="top" secondItem="2iS-FY-QIZ" secondAttribute="bottom" constant="10" id="kfJ-cd-8SL"/>
+                            <constraint firstItem="2iS-FY-QIZ" firstAttribute="leading" secondItem="5QK-DZ-5iY" secondAttribute="leadingMargin" id="qVQ-ZN-d1c"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="selectCityTextField" destination="SMr-G2-29g" id="44P-yM-EEN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o7d-UR-FiR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-45" y="890"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

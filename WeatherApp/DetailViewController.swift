@@ -32,7 +32,6 @@ class DetailViewController: UIViewController {
                     do{
                         print(data)
                         //                let str = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                        //                print(str)
                     }
                     catch {
                         print("json error: \(error)")

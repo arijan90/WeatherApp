@@ -25,22 +25,22 @@ class DetailViewController: UIViewController {
         if let detail = self.detailItem {
             if let label = self.detailDescriptionLabel {
                 label.text = detail.description
+                
+                let londonWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=London"// + detail.description
+                
+                let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: londonWeatherUrl)!, completionHandler: { (data, response, error) -> Void in
+                    do{
+                        print(data)
+                        //                let str = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
+                        //                print(str)
+                    }
+                    catch {
+                        print("json error: \(error)")
+                    }
+                })
+                task.resume()
             }
         }
-        
-        let londonWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=London,uk"
-        
-        let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: londonWeatherUrl)!, completionHandler: { (data, response, error) -> Void in
-            do{
-                print(data)
-//                let str = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-//                print(str)
-            }
-            catch {
-                print("json error: \(error)")
-            }
-        })
-        task.resume()
     }
 
     override func viewDidLoad() {

@@ -12,6 +12,7 @@ import UIKit
 
 class MasterViewController: UITableViewController {
 
+    let apiKey = "546be23921ef651bb1c511c2e6477f79"
     var detailViewController: DetailViewController? = nil
     var citiesArray = [AnyObject]()
 

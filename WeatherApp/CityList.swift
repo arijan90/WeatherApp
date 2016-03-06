@@ -12,16 +12,16 @@ class CityList {
     var jsonCity: [String]!
     
     init() {
-        if let path = NSBundle.mainBundle().pathForResource("city.list", ofType: "json")
+        if let path = NSBundle.mainBundle().pathForResource("city-list", ofType: "json")
         {
-            if let jsonData = NSData(contentsOfFile:path)
+            if let jsonData = NSData(contentsOfFile: path)
             {
                 do {
-                    let json = try NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
-                    
-                    if let name = json["name"] as? String {
-                        jsonCity.append(name)
-                    }
+                    let json = try NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
+                    print(json)
+//                    if let name = json["name"] as? String {
+//                        jsonCity.append(name)
+//                    }
                 } catch {
                     print("error serializing JSON: \(error)")
                 }

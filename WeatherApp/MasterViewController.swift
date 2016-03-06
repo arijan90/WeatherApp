@@ -14,7 +14,7 @@ class MasterViewController: UITableViewController {
 
     let apiKey = "546be23921ef651bb1c511c2e6477f79"
     var detailViewController: DetailViewController? = nil
-    var citiesArray = [AnyObject]()
+    var citiesArray = [City]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +27,7 @@ class MasterViewController: UITableViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -63,7 +64,7 @@ class MasterViewController: UITableViewController {
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 let object = citiesArray[indexPath.row]
                 let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
+                controller.selectedCity = object
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -84,7 +85,8 @@ class MasterViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
         let object = citiesArray[indexPath.row]
-        cell.textLabel!.text = object.description
+        cell.textLabel!.text = object.name
+        cell.detailTextLabel!.text = String(object.temperature)
         return cell
     }
 

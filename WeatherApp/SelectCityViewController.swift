@@ -25,29 +25,29 @@ class SelectCityViewController: UIViewController {
         var city: City!
         let url = "http://api.openweathermap.org/data/2.5/weather?q=\(cityName)&APPID=\(apiKey)&units=metric"
         
-//        let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: url)!, completionHandler: { (data, response, error) -> Void in
-//            do{
-//                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
-//                
-//                print(jsonResponse)
-//                let id = jsonResponse["id"]!.integerValue
-//                let name = jsonResponse["name"]!
-//                let humidity = jsonResponse["main"]!["humidity"]!!.floatValue
-//                let temperature = jsonResponse["main"]!["temp"]!!.floatValue
-//                let description = "sadf"//jsonResponse["weather"]!["description"]!!
-//                
-//                city = City.init(id: id, name: name as! String, temperature: temperature, humidity: humidity, description: description)
-//                
-//                print(city)
-//            }
-//            catch {
-//                print("json error: \(error)")
-//            }
-//        })
-//        task.resume()
+        let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: url)!, completionHandler: { (data, response, error) -> Void in
+            do{
+                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
+                
+                let id = jsonResponse["id"]!.integerValue
+                let name = jsonResponse["name"]!
+                let humidity = jsonResponse["main"]!["humidity"]!!.floatValue
+                let temperature = jsonResponse["main"]!["temp"]!!.floatValue
+                let description = jsonResponse["weather"]!.objectAtIndex(0)["description"]
+                
+                city = City.init(id: id, name: name as! String, temperature: temperature, humidity: humidity, description: description as! String)
+            }
+            catch {
+                print("json error: \(error)")
+            }
+        })
+        task.resume()
         
-        // Block returning selected city
-        city = City.init(id: 1234, name: "London", temperature: 20.5, humidity: 89, description: "Rainy weather")
+//        returnSelectedCity(city)
+    }
+    
+    private func returnSelectedCity(city: City) {
+//        Block returning selected city
         onCitySelected(city)
         navigationController?.popViewControllerAnimated(true)
     }

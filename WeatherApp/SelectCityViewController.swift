@@ -8,9 +8,8 @@
 
 import UIKit
 
-class SelectCityViewController: UIViewController, UITextFieldDelegate {
+class SelectCityViewController: UIViewController {
     
-    let apiKey = "546be23921ef651bb1c511c2e6477f79"
     @IBOutlet weak var selectCityTextField: UITextField!
     
     var onCitySelected : ((City) -> ())!
@@ -24,38 +23,22 @@ class SelectCityViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidChange(textField: UITextField) {
+        // Check each input and if its not space or new line then enable Save button
         let inputText = textField.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         navigationItem.rightBarButtonItem?.enabled = inputText.characters.count > 0 ? true : false
     }
     
     func saveNewCity(sender: AnyObject) {
-        let cityName = selectCityTextField.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!
+        let cityName = selectCityTextField.text!
         
-        var city: City!
-        let url = "http://api.openweathermap.org/data/2.5/weather?q=\(cityName)&APPID=\(apiKey)&units=metric"
-        
-        let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: url)!, completionHandler: { [weak self] (data, response, error) -> Void in
-            do{
-                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
-                
-                let id = jsonResponse["id"]!.integerValue
-                let name = jsonResponse["name"]!
-                let humidity = jsonResponse["main"]!["humidity"]!!.floatValue
-                let temperature = jsonResponse["main"]!["temp"]!!.floatValue
-                let description = jsonResponse["weather"]!.objectAtIndex(0)["description"]
-                
-                city = City.init(id: id, name: name as! String, temperature: temperature, humidity: humidity, description: description as! String)
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    //        Block returning selected city
-                    self?.onCitySelected(city)
-                    self?.navigationController?.popViewControllerAnimated(true)
-                })
-            }
-            catch {
-                print("json error: \(error)")
-            }
-        })
-        task.resume()
+        GetCityJson.sharedInstance.getJson(cityName, isGroup: false) { [weak self] (result) -> Void in
+            
+            // Parse JSON result to City
+            let city = City.init(json: result)
+            
+            // Block returning selected city
+            self?.onCitySelected(city)
+            self?.navigationController?.popViewControllerAnimated(true)
+        }
     }
 }

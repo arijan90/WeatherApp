@@ -16,12 +16,12 @@ class City {
     var humidity: Float
     var description: String
     
-    init(id: Int, name: String, temperature: Float, humidity: Float, description: String) {
-        self.id = id
-        self.name = name
-        self.temperature = temperature
-        self.humidity = humidity
-        self.description = description
+    init(json: NSDictionary) {
+        self.id = json["id"]!.integerValue
+        self.name = json["name"]! as! String
+        self.humidity = json["main"]!["humidity"]!!.floatValue
+        self.temperature = json["main"]!["temp"]!!.floatValue
+        self.description = json["weather"]!.objectAtIndex(0)["description"]! as! String
     }
     
 }

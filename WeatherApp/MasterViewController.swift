@@ -15,10 +15,11 @@ class MasterViewController: UITableViewController {
     let apiKey = "546be23921ef651bb1c511c2e6477f79"
     var detailViewController: DetailViewController? = nil
     var citiesArray = [City]()
+    var refreshControlView: UIRefreshControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "selectNewCity:")
@@ -28,6 +29,10 @@ class MasterViewController: UITableViewController {
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
 
+        refreshControlView = UIRefreshControl()
+        refreshControlView.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControlView.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(refreshControlView)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -38,6 +43,31 @@ class MasterViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func refresh(sender: AnyObject) {
+        
+        var idCities: String = ""
+        
+        for city in citiesArray {
+            idCities += "\(city.id),"
+        }
+        let stringWithoutLastChar = idCities.substringToIndex(idCities.endIndex.predecessor())
+        
+        GetCityJson.sharedInstance.getJson(stringWithoutLastChar, isGroup: true) { [weak self] (result) -> Void in
+            
+            let numberOfItems = result["cnt"]!
+            let jsonArray = result["list"]!
+            
+            self?.citiesArray = []
+            for var i = 0; i < numberOfItems.integerValue; i++ {
+                let city = City.init(json: jsonArray[i] as! NSDictionary)
+                self?.citiesArray.append(city)
+            }
+            
+            self?.refreshControlView.endRefreshing()
+            self?.tableView.reloadData()
+        }
     }
 
     func selectNewCity(sender: AnyObject) {
@@ -50,11 +80,6 @@ class MasterViewController: UITableViewController {
             self?.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
         navigationController?.pushViewController(selectCityVC, animated: true)
-        
-//        
-//        objects.insert(NSDate(), atIndex: 0)
-//        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-//        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
 
     // MARK: - Segues
@@ -86,7 +111,7 @@ class MasterViewController: UITableViewController {
 
         let object = citiesArray[indexPath.row]
         cell.textLabel!.text = object.name
-        cell.detailTextLabel!.text = String(object.temperature)
+        cell.detailTextLabel!.text = "\(Int(object.temperature))°C"
         return cell
     }
 
@@ -99,11 +124,8 @@ class MasterViewController: UITableViewController {
         if editingStyle == .Delete {
             citiesArray.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
-
 
 }
 

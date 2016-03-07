@@ -21,9 +21,9 @@ class DetailViewController: UIViewController {
         // Update the user interface for the detail item.
         if let selectedCity = self.selectedCity {
             detailDescriptionLabel.text = selectedCity.name
-            temperatureLabel.text = String(selectedCity.temperature)
-            humidityLabel.text = String(selectedCity.humidity)
-            descriptionLabel.text = String(selectedCity.description)
+            temperatureLabel.text = "\(Int(selectedCity.temperature))°C"
+            humidityLabel.text = "\(selectedCity.humidity)%"
+            descriptionLabel.text = "\(selectedCity.description)"
         }
     }
 

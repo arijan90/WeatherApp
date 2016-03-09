@@ -12,13 +12,17 @@ import UIKit
 
 class MasterViewController: UITableViewController {
 
-    let apiKey = "546be23921ef651bb1c511c2e6477f79"
     var detailViewController: DetailViewController? = nil
     var citiesArray = [City]()
     var refreshControlView: UIRefreshControl!
+    var userDefaults: NSUserDefaults!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userDefaults = NSUserDefaults.standardUserDefaults()
+        
+        retrieveData()
         
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
@@ -46,12 +50,17 @@ class MasterViewController: UITableViewController {
     }
     
     func refresh(sender: AnyObject) {
+        if citiesArray.count == 0 {
+            refreshControlView.endRefreshing()
+            return
+        }
         
         var idCities: String = ""
         
         for city in citiesArray {
             idCities += "\(city.id),"
         }
+        
         let stringWithoutLastChar = idCities.substringToIndex(idCities.endIndex.predecessor())
         
         GetCityJson.sharedInstance.getJson(stringWithoutLastChar, isGroup: true) { [weak self] (result) -> Void in
@@ -76,10 +85,26 @@ class MasterViewController: UITableViewController {
 
         selectCityVC.onCitySelected = { [weak self] (city) in
             self?.citiesArray.insert(city, atIndex: 0)
+            self?.saveData()
+            
             let indexPath = NSIndexPath(forRow: 0, inSection: 0)
             self?.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
         navigationController?.pushViewController(selectCityVC, animated: true)
+    }
+    
+    // MARK: - Save data to NSUserDefaults
+    
+    func saveData() {
+        let archivedObject = NSKeyedArchiver.archivedDataWithRootObject(citiesArray as NSArray)
+        userDefaults.setObject(archivedObject, forKey: "CityArray")
+        userDefaults.synchronize()
+    }
+    
+    func retrieveData() {
+        if let unarchivedObject = userDefaults.objectForKey("CityArray") as? NSData {
+            citiesArray = NSKeyedUnarchiver.unarchiveObjectWithData(unarchivedObject) as! [City]
+        }
     }
 
     // MARK: - Segues
@@ -109,10 +134,16 @@ class MasterViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
-        let object = citiesArray[indexPath.row]
+        configureCell(cell, index: indexPath.row)
+        
+        return cell
+    }
+    
+    // Populate cell with correct data
+    private func configureCell(cell: UITableViewCell, index: Int) {
+        let object = citiesArray[index]
         cell.textLabel!.text = object.name
         cell.detailTextLabel!.text = "\(Int(object.temperature))°C"
-        return cell
     }
 
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

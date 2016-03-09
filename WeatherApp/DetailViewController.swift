@@ -23,7 +23,7 @@ class DetailViewController: UIViewController {
             detailDescriptionLabel.text = selectedCity.name
             temperatureLabel.text = "\(Int(selectedCity.temperature))°C"
             humidityLabel.text = "\(selectedCity.humidity)%"
-            descriptionLabel.text = "\(selectedCity.description)"
+            descriptionLabel.text = "\(selectedCity.cityDescription)"
         }
     }
 

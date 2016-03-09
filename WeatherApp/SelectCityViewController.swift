@@ -19,7 +19,10 @@ class SelectCityViewController: UIViewController {
         navigationItem.rightBarButtonItem = addButton
         navigationItem.rightBarButtonItem?.enabled = false
         
+        navigationItem.title = "Add new city"
+        
         selectCityTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        selectCityTextField.becomeFirstResponder()
     }
     
     func textFieldDidChange(textField: UITextField) {

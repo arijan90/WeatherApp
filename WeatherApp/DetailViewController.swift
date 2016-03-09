@@ -16,6 +16,12 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
 
     var selectedCity: City!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.configureView()
+    }
 
     func configureView() {
         // Update the user interface for the detail item.
@@ -25,12 +31,6 @@ class DetailViewController: UIViewController {
             humidityLabel.text = "\(selectedCity.humidity)%"
             descriptionLabel.text = "\(selectedCity.cityDescription)"
         }
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.configureView()
     }
 
     override func didReceiveMemoryWarning() {

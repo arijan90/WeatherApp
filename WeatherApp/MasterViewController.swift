@@ -6,8 +6,6 @@
 //  Copyright © 2016 Arijan Ljoki. All rights reserved.
 //
 
-// API-key 546be23921ef651bb1c511c2e6477f79
-
 import UIKit
 
 class MasterViewController: UITableViewController {
@@ -23,6 +21,9 @@ class MasterViewController: UITableViewController {
         userDefaults = NSUserDefaults.standardUserDefaults()
         
         retrieveData()
+        
+        // Remove separators from empty cells
+        tableView.tableFooterView = UIView.init(frame: CGRectZero)
         
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
@@ -61,6 +62,7 @@ class MasterViewController: UITableViewController {
             idCities += "\(city.id),"
         }
         
+        // Remove last char from string
         let stringWithoutLastChar = idCities.substringToIndex(idCities.endIndex.predecessor())
         
         GetCityJson.sharedInstance.getJson(stringWithoutLastChar, isGroup: true) { [weak self] (result) -> Void in
@@ -93,7 +95,7 @@ class MasterViewController: UITableViewController {
         navigationController?.pushViewController(selectCityVC, animated: true)
     }
     
-    // MARK: - Save data to NSUserDefaults
+    // MARK: - Set and get data
     
     func saveData() {
         let archivedObject = NSKeyedArchiver.archivedDataWithRootObject(citiesArray as NSArray)
@@ -134,13 +136,13 @@ class MasterViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
-        configureCell(cell, index: indexPath.row)
+        populateCell(cell, index: indexPath.row)
         
         return cell
     }
     
     // Populate cell with correct data
-    private func configureCell(cell: UITableViewCell, index: Int) {
+    private func populateCell(cell: UITableViewCell, index: Int) {
         let object = citiesArray[index]
         cell.textLabel!.text = object.name
         cell.detailTextLabel!.text = "\(Int(object.temperature))°C"
@@ -155,6 +157,7 @@ class MasterViewController: UITableViewController {
         if editingStyle == .Delete {
             citiesArray.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            saveData()
         }
     }
 

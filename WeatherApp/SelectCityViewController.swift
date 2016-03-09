@@ -12,6 +12,7 @@ class SelectCityViewController: UIViewController {
     
     @IBOutlet weak var selectCityTextField: UITextField!
     
+    @IBOutlet weak var warningLabel: UILabel!
     var onCitySelected : ((City) -> ())!
     
     override func viewDidLoad() {
@@ -20,6 +21,7 @@ class SelectCityViewController: UIViewController {
         navigationItem.rightBarButtonItem?.enabled = false
         
         navigationItem.title = "Add new city"
+        warningLabel.text = ""
         
         selectCityTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         selectCityTextField.becomeFirstResponder()
@@ -29,12 +31,23 @@ class SelectCityViewController: UIViewController {
         // Check each input and if its not space or new line then enable Save button
         let inputText = textField.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         navigationItem.rightBarButtonItem?.enabled = inputText.characters.count > 0 ? true : false
+        warningLabel.text = ""
     }
     
     func saveNewCity(sender: AnyObject) {
         let cityName = selectCityTextField.text!
         
         GetCityJson.sharedInstance.getJson(cityName, isGroup: false) { [weak self] (result) -> Void in
+            
+            self?.warningLabel.text = ""
+            
+            // Check if response is 404, then show error message
+            if let code = result.objectForKey("cod") {
+                if code as? String == "404" {
+                    self?.warningLabel.text = result.objectForKey("message") as? String
+                    return
+                }
+            }
             
             // Parse JSON result to City
             let city = City.init(json: result)

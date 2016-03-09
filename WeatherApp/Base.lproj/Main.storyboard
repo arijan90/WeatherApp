@@ -216,23 +216,32 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type city name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SMr-G2-29g">
-                                <rect key="frame" x="20" y="60.5" width="550" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type city name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="SMr-G2-29g">
+                                <rect key="frame" x="20" y="60" width="560" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xoM-IL-EdH">
+                                <rect key="frame" x="279" y="140.5" width="42" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2iS-FY-QIZ" firstAttribute="top" secondItem="LVH-kL-pvy" secondAttribute="bottom" constant="10" id="3g5-B5-gxj"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="SMr-G2-29g" secondAttribute="trailing" constant="10" id="7gS-Mu-iDV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="SMr-G2-29g" secondAttribute="trailing" id="7gS-Mu-iDV"/>
                             <constraint firstItem="SMr-G2-29g" firstAttribute="leading" secondItem="2iS-FY-QIZ" secondAttribute="leading" id="ivc-Zo-bPK"/>
                             <constraint firstItem="SMr-G2-29g" firstAttribute="top" secondItem="2iS-FY-QIZ" secondAttribute="bottom" constant="10" id="kfJ-cd-8SL"/>
                             <constraint firstItem="2iS-FY-QIZ" firstAttribute="leading" secondItem="5QK-DZ-5iY" secondAttribute="leadingMargin" id="qVQ-ZN-d1c"/>
+                            <constraint firstItem="xoM-IL-EdH" firstAttribute="top" secondItem="SMr-G2-29g" secondAttribute="bottom" constant="50" id="uLO-Ly-24Q"/>
+                            <constraint firstItem="xoM-IL-EdH" firstAttribute="centerX" secondItem="5QK-DZ-5iY" secondAttribute="centerX" id="vMA-kz-vD6"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="selectCityTextField" destination="SMr-G2-29g" id="44P-yM-EEN"/>
+                        <outlet property="warningLabel" destination="xoM-IL-EdH" id="mmR-DS-eAG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o7d-UR-FiR" userLabel="First Responder" sceneMemberID="firstResponder"/>

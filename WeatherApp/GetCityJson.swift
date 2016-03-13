@@ -15,10 +15,10 @@ class GetCityJson {
     static let sharedInstance = GetCityJson()
     
     /**
-     * Get json response for selected city
+     * Get city response for selected city
      * - isGroup: if true get response for multiple cities
      */
-    func getJson(str: String, isGroup: Bool, completion: (result: NSDictionary) -> Void) {
+    func getCity(str: String, isGroup: Bool, completion: (result: NSDictionary) -> Void) {
         var stringPreparedForURL = isGroup ? "group?id=" : "weather?q="
         stringPreparedForURL += str.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!
         

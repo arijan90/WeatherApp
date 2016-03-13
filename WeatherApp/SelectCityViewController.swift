@@ -37,7 +37,7 @@ class SelectCityViewController: UIViewController {
     func saveNewCity(sender: AnyObject) {
         let cityName = selectCityTextField.text!
         
-        GetCityJson.sharedInstance.getJson(cityName, isGroup: false) { [weak self] (result) -> Void in
+        GetCityJson.sharedInstance.getCity(cityName, isGroup: false) { [weak self] (result) -> Void in
             
             self?.warningLabel.text = ""
             

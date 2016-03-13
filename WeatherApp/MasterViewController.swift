@@ -36,7 +36,7 @@ class MasterViewController: UITableViewController {
 
         refreshControlView = UIRefreshControl()
         refreshControlView.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControlView.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControlView.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControlView)
     }
 
@@ -50,7 +50,7 @@ class MasterViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func refresh(sender: AnyObject) {
+    func refresh() {
         if citiesArray.count == 0 {
             refreshControlView.endRefreshing()
             return
@@ -65,7 +65,7 @@ class MasterViewController: UITableViewController {
         // Remove last char from string
         let stringWithoutLastChar = idCities.substringToIndex(idCities.endIndex.predecessor())
         
-        GetCityJson.sharedInstance.getJson(stringWithoutLastChar, isGroup: true) { [weak self] (result) -> Void in
+        GetCityJson.sharedInstance.getCity(stringWithoutLastChar, isGroup: true) { [weak self] (result) -> Void in
             
             let numberOfItems = result["cnt"]!
             let jsonArray = result["list"]!
@@ -106,6 +106,8 @@ class MasterViewController: UITableViewController {
     func retrieveData() {
         if let unarchivedObject = userDefaults.objectForKey("CityArray") as? NSData {
             citiesArray = NSKeyedUnarchiver.unarchiveObjectWithData(unarchivedObject) as! [City]
+            
+            refresh()
         }
     }
 
